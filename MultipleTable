@@ -1,0 +1,63 @@
+SELECT *
+FROM Product_categories;
+
+SELECT *
+FROM Products;
+
+
+SELECT Products.product_id, Products.product_name, Product_categories.category_name
+FROM Products
+INNER JOIN Product_categories ON products.category_id = Product_categories.category_id;
+
+
+SELECT p.product_id, p.product_name, pc.category_name
+FROM Products p
+INNER JOIN Product_categories pc ON p.category_id = pc.category_id;
+
+
+--LEFT JOIN
+SELECT Products.product_id, Products.product_name, Product_categories.category_name
+FROM Products
+LEFT JOIN Product_categories ON Products.category_id = Product_categories.category_id;
+
+
+--RIGHT JOIN
+SELECT Products.product_id, Products.product_name, Product_categories.category_name
+FROM Products
+RIGHT JOIN Product_categories ON Products.category_id = Product_categories.category_id;
+
+
+--FULL JOIN
+SELECT Products.product_id, Products.product_name, Product_categories.category_name
+FROM Products
+FULL JOIN Product_categories ON Products.category_id = Product_categories.category_id;
+
+
+--CROSS JOIN
+SELECT *
+FROM Products
+CROSS JOIN Product_categories;
+
+
+--UNION
+SELECT product_id, product_name, product_brand, 'Product' AS Type
+FROM Products
+
+UNION
+
+-- Query for category
+SELECT category_id, category_name, NULL AS product_brand, 'Category' AS Type
+FROM Product_categories;
+
+
+--WITH
+
+WITH total_product AS (
+SELECT category_id, SUM(quantity_in_stock) as all_product
+FROM Products
+GROUP BY category_id
+)
+SELECT pc.category_name, tp.all_product
+FROM Product_categories pc
+JOIN total_product tp ON pc.category_id = tp.category_id;
+

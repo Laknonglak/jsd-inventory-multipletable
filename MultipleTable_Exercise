@@ -1,0 +1,42 @@
+--1
+SELECT 
+    p.product_name,
+    p.unit_price,
+    c.category_name
+FROM 
+    Products p
+JOIN 
+    Product_Categories c ON p.category_id = c.category_id
+WHERE 
+    p.unit_price > 3.00;
+    
+--2
+SELECT 
+    pc.category_name,
+    COUNT(p.product_id) AS ProductCount
+FROM 
+    Product_Categories pc
+LEFT JOIN 
+    Products p ON pc.category_id = p.category_id
+GROUP BY 
+    pc.category_name;
+    
+--3
+
+WITH CategoryTotal AS (
+    SELECT 
+        category_id,
+        SUM(unit_price * quantity_in_stock) AS TotalUnitPrice
+    FROM 
+        Products
+    GROUP BY 
+        category_id
+)
+
+SELECT 
+    c.category_name,
+    ct.TotalUnitPrice
+FROM 
+    CategoryTotal ct
+JOIN 
+    Product_Categories c ON ct.category_id = c.category_id;
